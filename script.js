@@ -15,7 +15,7 @@ function switchView(viewType) {
   }
 }
 const SHEET_ID = '1XNL6jEeq9Gqsr6cAwxIl1vlYUhw_4ZqFv9cecY7STvo';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRUwpIGqZV9500bg76CElKkIph7Psk4_rUPx8eaZGBPGKEs4KWg464dt8Z0feg4-Z0a_2wBw6s7wn4R/pub?output=csv`;
 
 let allProducts = [];
 
