@@ -1,3 +1,19 @@
+// Görünüm Değiştirme Fonksiyonu (Grid 2x2 veya Liste Alt Alta)
+function switchView(viewType) {
+  const menuContainer = document.getElementById('menuContainer');
+  const gridBtn = document.getElementById('gridBtn');
+  const listBtn = document.getElementById('listBtn');
+
+  if (viewType === 'grid') {
+    menuContainer.classList.remove('list-view');
+    gridBtn.classList.add('active');
+    listBtn.classList.remove('active');
+  } else if (viewType === 'list') {
+    menuContainer.classList.add('list-view');
+    listBtn.classList.add('active');
+    gridBtn.classList.remove('active');
+  }
+}
 const SHEET_ID = '1XNL6jEeq9Gqsr6cAwxIl1vlYUhw_4ZqFv9cecY7STvo';
 const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
 
