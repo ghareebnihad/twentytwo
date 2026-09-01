@@ -14,30 +14,23 @@ function switchView(viewType) {
     gridBtn.classList.remove('active');
   }
 }
-const SHEET_ID = '1XNL6jEeq9Gqsr6cAwxIl1vlYUhw_4ZqFv9cecY7STvo';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/e/2PACX-1vRUwpIGqZV9500bg76CElKkIph7Psk4_rUPx8eaZGBPGKEs4KWg464dt8Z0feg4-Z0a_2wBw6s7wn4R/pub?output=csv`;
+
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRUwpIGqZV9500bg76CElKkIph7Psk4_rUPx8eaZGBPGKEs4KWg464dt8Z0feg4-Z0a_2wBw6s7wn4R/pub?output=csv';
 
 let allProducts = [];
+
+// Sayfa yüklendiğinde menüyü çek
+document.addEventListener("DOMContentLoaded", () => {
+  fetchMenu();
+});
 
 async function fetchMenu() {
   try {
     const response = await fetch(SHEET_URL);
     const text = await response.text();
     
-    const jsonString = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
-    const json = JSON.parse(jsonString);
+    allProducts = parseCSV(text);
     
-    allProducts = json.table.rows
-      .map(row => ({
-        category: String(row.c[0]?.v || '').trim().toLowerCase(),
-        title: String(row.c[1]?.v || '').trim(),
-        subtitle: String(row.c[2]?.v || '').trim(),
-        price: String(row.c[3]?.v || '').trim(),
-        image: String(row.c[4]?.v || '').trim(),
-        desc: String(row.c[5]?.v || '').trim()
-      }))
-      .filter(p => p.title !== '' && p.title.toLowerCase() !== 'title');
-
     const firstBtn = document.querySelector('.cat-btn');
     if(firstBtn) {
         filterCategory('hot', firstBtn);
@@ -46,9 +39,41 @@ async function fetchMenu() {
     }
 
   } catch (error) {
-    console.error(error);
+    console.error("Veri çekme hatası:", error);
     document.getElementById('menuContainer').innerHTML = '<div class="loading-text">فشل تحميل القائمة. يرجى التحقق من مشاركة الجدول.</div>';
   }
+}
+
+// CSV Metnini Güvenli Bir Şekilde Parçalayan Fonksiyon
+function parseCSV(text) {
+  const lines = text.split("\n");
+  const result = [];
+  
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    // Virgül ve tırnak işaretlerini dikkate alarak satırı ayır
+    const currentLine = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+    
+    if (currentLine.length >= 5) {
+      // Sıralama: 0: ID/Boş, 1: name, 2: category, 3: price, 4: image
+      const title = currentLine[1] ? currentLine[1].replace(/["']/g, "").trim() : "";
+      const category = currentLine[2] ? currentLine[2].replace(/["']/g, "").trim().toLowerCase() : "";
+      const price = currentLine[3] ? currentLine[3].replace(/["']/g, "").trim() : "";
+      const image = currentLine[4] ? currentLine[4].replace(/["']/g, "").trim() : "";
+
+      if (title && title.toLowerCase() !== 'name' && title.toLowerCase() !== 'title') {
+        result.push({
+          category: category,
+          title: title,
+          subtitle: "",
+          price: price,
+          image: image,
+          desc: ""
+        });
+      }
+    }
+  }
+  return result;
 }
 
 function renderMenu(items) {
@@ -73,13 +98,12 @@ function renderMenu(items) {
       
       <div class="info">
         <h2 class="item-title">${item.title}</h2>
-        ${item.subtitle ? `<div class="item-subtitle">${item.subtitle}</div>` : ''}
       </div>
 
       <div class="divider"></div>
 
       <div class="price-container">
-        <span class="price-badge">${item.price} IQD</span>
+        <span class="price-badge">${item.price}</span>
       </div>
     </article>
   `).join('');
@@ -88,7 +112,8 @@ function renderMenu(items) {
 function filterCategory(catSearchTerm, btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  document.getElementById('searchInput').value = '';
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
   
   document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -104,10 +129,7 @@ function filterMenu() {
   
   const input = document.getElementById('searchInput').value.toLowerCase();
   const filtered = allProducts.filter(p => 
-    p.title.toLowerCase().includes(input) || 
-    p.subtitle.toLowerCase().includes(input)
+    p.title.toLowerCase().includes(input)
   );
   renderMenu(filtered);
 }
-
-fetchMenu();
