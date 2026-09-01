@@ -134,14 +134,15 @@ body { padding: 12px; }
 }
 
 /* ==========================================
-   YATAY KATEGORİ BUTONLARI (%30 Küçültülmüş ve İnce)
+   YATAY KATEGORİ BUTONLARI (%20 Büyütülmüş)
    ========================================== */
 .category-buttons { 
   display: flex; 
-  gap: 8px; 
+  gap: 10px; 
   overflow-x: auto; 
   scrollbar-width: none; 
-  padding: 4px 4px 14px 4px; 
+  /* Butonlar ile ürün kartları arasındaki boşluk %40 artırıldı (14px -> ~20px) */
+  padding: 6px 4px 20px 4px; 
   scroll-behavior: smooth;
   scroll-padding-inline: 4px;
 }
@@ -152,11 +153,11 @@ body { padding: 12px; }
   background: var(--card-bg); 
   border: 1px solid var(--card-border); 
   color: var(--text-muted); 
-  min-width: 90px; 
-  height: 40px;    
-  border-radius: 12px; 
+  min-width: 108px; /* %20 büyütüldü (90px -> 108px) */
+  height: 48px;     /* %20 büyütüldü (40px -> 48px) */
+  border-radius: 14px; 
   font-family: 'Montserrat', 'Noto Sans Arabic', sans-serif;
-  font-size: 0.68rem; 
+  font-size: 0.75rem; /* %20 büyütüldü */
   font-weight: 600; 
   cursor: pointer; 
   backdrop-filter: blur(16px);
@@ -166,8 +167,8 @@ body { padding: 12px; }
   flex-direction: row; 
   align-items: center;
   justify-content: flex-start;
-  gap: 6px; 
-  padding: 0 10px; 
+  gap: 8px; /* %20 büyütüldü */
+  padding: 0 12px; /* %20 büyütüldü */
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
@@ -177,8 +178,8 @@ body { padding: 12px; }
 }
 
 .cat-icon {
-  width: 18px;  
-  height: 18px; 
+  width: 21.5px; /* %20 büyütüldü (18px -> ~21.5px) */
+  height: 21.5px;
   fill: var(--text-muted);
   transition: all 0.3s ease;
   flex-shrink: 0;
@@ -203,33 +204,33 @@ body { padding: 12px; }
 #menuContainer {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: 12px;
   padding: 4px 4px 30px 4px;
   transition: all 0.3s ease;
 }
 
-/* --- LİSTE MODU (Sadece İsim, Küçük Resim ve Fiyat) --- */
+/* --- LİSTE MODU --- */
 #menuContainer.list-view {
   grid-template-columns: 1fr;
-  gap: 8px;
+  gap: 10px; /* %40 artırıldı (8px -> ~11px) */
 }
 
 #menuContainer.list-view .item-card {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 8px 12px;
+  gap: 14px;
+  padding: 10px 14px;
   border-radius: 16px;
-  min-height: 56px;
+  min-height: 72px;
 }
 
 #menuContainer.list-view .img-wrapper {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
+  width: 64px;
+  height: 64px;
+  min-width: 64px;
   aspect-ratio: 1 / 1;
-  border-radius: 10px;
+  border-radius: 12px;
   margin-bottom: 0;
   flex-shrink: 0;
 }
@@ -243,18 +244,16 @@ body { padding: 12px; }
 }
 
 #menuContainer.list-view .item-title {
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   margin-bottom: 0;
   font-weight: 600;
 }
 
-/* Liste modunda altyazı ve ekstra çizgileri gizle */
 #menuContainer.list-view .item-subtitle,
 #menuContainer.list-view .divider {
   display: none !important;
 }
 
-/* Liste modunda fiyatı sağa sabitle ve görünür yap */
 #menuContainer.list-view .price-container {
   width: auto;
   display: flex !important;
@@ -264,7 +263,7 @@ body { padding: 12px; }
 
 #menuContainer.list-view .price-badge {
   font-size: 0.85rem;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 10px;
   background: rgba(229, 193, 88, 0.08);
 }
